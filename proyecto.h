@@ -11,9 +11,31 @@ struct Comando{
     char descripcion[1000];
     char posiblesSalidas[1000];
 
-    
 };
 
+struct Codigos{
+    std::vector<char> codigo;
+    std::vector<char[10]> significado;
+};
+
+struct Secuencia{
+    char nombre[50];
+    std::vector<char*> contenido;
+    int ancho;
+
+
+    };
+
+struct ListaSecuencias{
+    std::vector<Secuencia> secuencias;
+
+    void cargar(char nombre[]);
+    void listarSecuencia();
+    void histograma(char nombre[]);
+    void esSubsecuencia(char subsecuencia[]);
+    void enmascarar(char subsecuencia[]);
+    void guardar(char nombreArchivo[]);
+};
 
 void crearComando();
 std::vector<std::string> separarComando(std::string entrada);

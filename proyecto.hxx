@@ -1,6 +1,8 @@
 #include "proyecto.h"
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <cstring>
 void crearComando()
 {
     char otro = 'Y';
@@ -49,6 +51,47 @@ void crearComando()
     }
 }
 
+void ListaSecuencias::cargar(char *nombre)
+{
+    bool primeraVez = true;
+    Secuencia aux;
+    strcpy(aux.nombre, "");
+    char cadena[1000];
+    std::ifstream cargar(nombre);
+    if (!cargar)
+    {
+        std::cout << "El archivo no fue cargado correctamente";
+        return;
+    }
+    while (cargar.getline(cadena, 1000))
+    {
+        if (cadena[0] == '>')
+        {
+            if (strcmp(aux.nombre, "") != 0)
+            {
+                secuencias.push_back(aux);
+            }
+            strcpy(aux.nombre, cadena + 1);
+            aux.contenido.clear();
+            primeraVez = true;
+        }
+        else
+        {
+            char *linea = new char[strlen(cadena) + 1];
+            strcpy(linea, cadena);
+
+            // guardar la copia en el vector
+            aux.contenido.push_back(linea);
+            if (primeraVez == true)
+            {
+                aux.ancho = (int)strlen(cadena);
+                primeraVez = false;
+            }
+        }
+    }
+    secuencias.push_back(aux);
+}
+
 std::vector<std::string> separarComando(std::string entrada)
 {
     int i = 0, j = 0;
@@ -77,19 +120,20 @@ std::vector<std::string> separarComando(std::string entrada)
     while (comandoSinEspaciosAlInicio.at(j) != ' ')
     {
         aux += comandoSinEspaciosAlInicio.at(j); // aux guarda el comando como tal
-        if(j < ((int)comandoSinEspaciosAlInicio.size())-1)
+        if (j < ((int)comandoSinEspaciosAlInicio.size()) - 1)
             j++;
-        else{
+        else
+        {
             hayArgumentosPorLeer = false;
             break;
         }
     }
     retorno.push_back(aux);
 
-    if(hayArgumentosPorLeer == false)
+    if (hayArgumentosPorLeer == false)
         return retorno;
 
-    aux="";
+    aux = "";
     for (; j < (int)comandoSinEspaciosAlInicio.size(); j++)
     {
         if (leyendoEspacios == true)
@@ -102,7 +146,7 @@ std::vector<std::string> separarComando(std::string entrada)
         }
         else
         {
-            if (comandoSinEspaciosAlInicio.at(j) != ' ') //guarda los argumentos en un arreglo
+            if (comandoSinEspaciosAlInicio.at(j) != ' ') // guarda los argumentos en un arreglo
             {
                 aux += comandoSinEspaciosAlInicio.at(j);
                 nuevoArgumento = true;
@@ -120,7 +164,8 @@ std::vector<std::string> separarComando(std::string entrada)
     return retorno;
 }
 
-void escribirComando(std::vector<Comando> ComandosExistentes){
+void escribirComando(std::vector<Comando> ComandosExistentes)
+{
     std::string comando, argumento;
     std::vector<std::string> argumentos;
     while (comando != "salir")
@@ -148,12 +193,15 @@ void escribirComando(std::vector<Comando> ComandosExistentes){
                     if (ComandosExistentes[i].nombre == argumentos[1])
                     {
                         std::cout << "Ayuda para el comando: " << std::endl
-                             << argumentos[1];
+                                  << argumentos[1];
                         if (ComandosExistentes[i].argumentos == true)
                             std::cout << " <Argumento Necesario>";
-                        std::cout << std::endl << std::endl << std::endl;
+                        std::cout << std::endl
+                                  << std::endl
+                                  << std::endl;
                         std::cout << "Descripcion del comando " << argumentos[1] << std::endl;
-                        std::cout << ComandosExistentes[i].descripcion << std::endl << std::endl;
+                        std::cout << ComandosExistentes[i].descripcion << std::endl
+                                  << std::endl;
                         std::cout << "Salidas posibles del comando " << argumentos[1] << std::endl;
                         std::cout << ComandosExistentes[i].posiblesSalidas;
                         comandoEncontrado = true;
