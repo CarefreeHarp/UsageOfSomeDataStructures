@@ -118,6 +118,7 @@ void ListaSecuencias::listarSecuencia()
     std::cout << "Hay " << secuencias.size() << " cargadas en memoria: " << std::endl;
     for (int i = 0; i < secuencias.size(); i++)
     {
+        completa = true;
         cantidadBases = 0;
         std::cout << "Secuencia " << secuencias[i].nombre;
         for (int j = 0; j < secuencias[i].contenido.size(); j++)
@@ -127,13 +128,13 @@ void ListaSecuencias::listarSecuencia()
             {
                 if (*(secuencias[i].contenido[j] + k) != '-')
                 {
-                    k++;
                     cantidadBases++;
                 }
                 else
                 {
-                    cantidadBases = false;
+                    completa = false;
                 }
+                k++;
             }
         }
         if (completa == true)
@@ -152,6 +153,11 @@ void ListaSecuencias::histograma(char nombre[])
     bool encontrado = false;
     int posicion;
     std::vector<int> cantidadCodigos;
+    char simbolos[18] = {'A', 'C', 'G', 'T', 'U', 'R', 'Y', 'K', 'M', 'S', 'W', 'B', 'D', 'H', 'V', 'N', 'X', '-'};
+    for (int l = 0; l < 18; l++)
+    {
+        cantidadCodigos.push_back(0);
+    }
     for (int i = 0; i < secuencias.size(); i++)
     {
         if (strcmp(secuencias[i].nombre, nombre) == 0)
@@ -168,11 +174,26 @@ void ListaSecuencias::histograma(char nombre[])
             std::cout << "Linea " << j + 1 << std::endl;
             while (*(secuencias[posicion].contenido[j] + k) != '\0')
             {
-                if(*(secuencias[posicion].contenido[j] + k) == 'A'){
-                    
+                for (int m = 0; m < 18; m++)
+                {
+                    if (*(secuencias[posicion].contenido[j] + k) == simbolos[m])
+                    {
+                        cantidadCodigos[m]++;
+                    }
                 }
+                k++;
             }
+            for (int n = 0; n < 18; n++)
+            {
+                std::cout << simbolos[n] << ": " << cantidadCodigos[n] << "\t";
+                cantidadCodigos[n] = 0;
+            }
+            std::cout << std::endl;
         }
+    }
+    else
+    {
+        std::cout << "Secuencia inválida ";
     }
 }
 std::vector<std::string> separarComando(std::string entrada)

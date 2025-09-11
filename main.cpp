@@ -9,11 +9,13 @@ int main()
     Comando a;
     fstream ArchivoComandos("comandos.guda", std::ios::binary | std::ios::in | std::ios::out);
     ListaSecuencias hola;
+    char histograma[] = "Full_SEQUENCE";
     Codigos jijija;
     char archivo[] = "archivo.fa";
     jijija.cargar();
     hola.cargar(archivo);
     hola.listarSecuencia();
+    hola.histograma(histograma);
 
     while (ArchivoComandos.read((char *)&a, sizeof(Comando)))
     {
