@@ -9,6 +9,12 @@ int main()
     Comando a;
     fstream ArchivoComandos("comandos.guda", std::ios::binary | std::ios::in | std::ios::out);
     ListaSecuencias hola;
+    Codigos jijija;
+    char archivo[] = "archivo.fa";
+    jijija.cargar();
+    hola.cargar(archivo);
+    hola.listarSecuencia();
+
     while (ArchivoComandos.read((char *)&a, sizeof(Comando)))
     {
         ComandosExistentes.push_back(a);

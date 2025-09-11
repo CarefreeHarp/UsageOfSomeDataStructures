@@ -15,7 +15,10 @@ struct Comando{
 
 struct Codigos{
     std::vector<char> codigo;
-    std::vector<char[10]> significado;
+    std::vector<char*> significado;
+    std::vector<char*> aux;
+
+    void cargar();
 };
 
 struct Secuencia{

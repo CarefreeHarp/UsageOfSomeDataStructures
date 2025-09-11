@@ -51,6 +51,25 @@ void crearComando()
     }
 }
 
+void Codigos::cargar()
+{
+    std::ifstream cargar("codigos.txt");
+    char linea[50];
+    if (!cargar)
+    {
+        std::cout << "El archivo no fue cargado correctamente";
+        return;
+    }
+    while (cargar.getline(linea, 50))
+    {
+        char *cadena = new char[strlen(linea) + 1];
+        strcpy(cadena, linea);
+        codigo.push_back(*(cadena));
+        significado.push_back(cadena + 2);
+        aux.push_back(cadena);
+    }
+}
+
 void ListaSecuencias::cargar(char *nombre)
 {
     bool primeraVez = true;
@@ -92,6 +111,70 @@ void ListaSecuencias::cargar(char *nombre)
     secuencias.push_back(aux);
 }
 
+void ListaSecuencias::listarSecuencia()
+{
+    bool completa = true;
+    int cantidadBases = 0;
+    std::cout << "Hay " << secuencias.size() << " cargadas en memoria: " << std::endl;
+    for (int i = 0; i < secuencias.size(); i++)
+    {
+        cantidadBases = 0;
+        std::cout << "Secuencia " << secuencias[i].nombre;
+        for (int j = 0; j < secuencias[i].contenido.size(); j++)
+        {
+            int k = 0;
+            while (*(secuencias[i].contenido[j] + k) != '\0')
+            {
+                if (*(secuencias[i].contenido[j] + k) != '-')
+                {
+                    k++;
+                    cantidadBases++;
+                }
+                else
+                {
+                    cantidadBases = false;
+                }
+            }
+        }
+        if (completa == true)
+        {
+            std::cout << " contiene " << cantidadBases << " bases" << std::endl;
+        }
+        else
+        {
+            std::cout << " contiene al menos " << cantidadBases << " bases" << std::endl;
+        }
+    }
+}
+
+void ListaSecuencias::histograma(char nombre[])
+{
+    bool encontrado = false;
+    int posicion;
+    std::vector<int> cantidadCodigos;
+    for (int i = 0; i < secuencias.size(); i++)
+    {
+        if (strcmp(secuencias[i].nombre, nombre) == 0)
+        {
+            encontrado = true;
+            posicion = i;
+        }
+    }
+    if (encontrado == true)
+    {
+        for (int j = 0; j < secuencias[posicion].contenido.size(); j++)
+        {
+            int k = 0;
+            std::cout << "Linea " << j + 1 << std::endl;
+            while (*(secuencias[posicion].contenido[j] + k) != '\0')
+            {
+                if(*(secuencias[posicion].contenido[j] + k) == 'A'){
+                    
+                }
+            }
+        }
+    }
+}
 std::vector<std::string> separarComando(std::string entrada)
 {
     int i = 0, j = 0;
