@@ -12,11 +12,12 @@ int main()
     char histograma[] = "Full_SEQUENCE";
     Codigos jijija;
     char archivo[] = "archivo.fa";
+    char subsecuencia[] = "GUILLERMOESGAY";
     jijija.cargar();
     hola.cargar(archivo);
-    hola.listarSecuencia();
-    hola.histograma(histograma);
-
+    //hola.listarSecuencia();
+    //hola.histograma(histograma);
+    hola.esSubsecuencia(subsecuencia);
     while (ArchivoComandos.read((char *)&a, sizeof(Comando)))
     {
         ComandosExistentes.push_back(a);
