@@ -58,7 +58,7 @@ void Codigos::cargar() {
   }
 }
 
-void ListaSecuencias::cargar(char *nombre) {
+void ListaSecuencias::cargar(const char *nombre) {
   bool primeraVez = true;
   Secuencia aux;
   strcpy(aux.nombre, "");
@@ -118,7 +118,7 @@ void ListaSecuencias::listarSecuencia() {
   }
 }
 
-void ListaSecuencias::histograma(char nombre[]) {
+void ListaSecuencias::histograma(const char nombre[]) {
   bool encontrado = false;
   int posicion;
   std::vector<int> cantidadCodigos;
@@ -151,11 +151,10 @@ void ListaSecuencias::histograma(char nombre[]) {
       std::cout << std::endl;
     }
   } else {
-    std::cout << "Secuencia inválida ";
+    std::cout << "Secuencia invalida ";
   }
 }
-
-void ListaSecuencias::esSubsecuencia(char subsecuencia[]) {
+void ListaSecuencias::esSubsecuencia(const char subsecuencia[]) {
   char *ptr;
   int contador = 0;
   if (secuencias.size() != 0) {
@@ -172,7 +171,7 @@ void ListaSecuencias::esSubsecuencia(char subsecuencia[]) {
       }
     }
     if (contador == 0) {
-      std::cout << "La subsecuancia dada no existe dentro de las secuencias cargadas en memoria" << std::endl;
+      std::cout << "La subsecuencia dada no existe dentro de las secuencias cargadas en memoria" << std::endl;
     } else {
       std::cout << "La subsecuencia dada se repite " << contador << " veces dentro de las secuencias cargadas en memoria" << std::endl;
     }
@@ -180,6 +179,60 @@ void ListaSecuencias::esSubsecuencia(char subsecuencia[]) {
     std::cout << "No hay secuencias cargadas en memoria" << std::endl;
     return;
   }
+}
+
+void ListaSecuencias::enmascarar(const char subsecuencia[]) {
+  char *ptr;
+
+  int largoSubsecuencia = strlen(subsecuencia);
+  int contador = 0;
+  if (secuencias.size() != 0) {
+    for (int i = 0; i < secuencias.size(); i++) {
+      for (int j = 0; j < secuencias[i].contenido.size(); j++) {
+        ptr = strstr(secuencias[i].contenido[j], subsecuencia);
+        while (ptr != nullptr) {
+          ptr = strstr(ptr, subsecuencia);
+          if (ptr != nullptr) {
+            for (int k = 0; k < largoSubsecuencia; k++) {
+              ptr[k] = 'X';
+            }
+            contador++;
+            ptr++;
+          }
+        }
+      }
+    }
+  } else {
+    std::cout << "No hay secuencias cargadas en memoria" << std::endl;
+    return;
+  }
+  if (contador == 0) {
+    std::cout << "La subsecuencia dada no existe dentro de las secuencias cargadas en memoria" << std::endl;
+  } else {
+    std::cout << contador << " subsecuencias han sido enmascaradas dentro de las secuencias cargadas en memoria." << std::endl;
+  }
+}
+
+void ListaSecuencias::guardar(const char nombreArchivo[]) {
+  std::ofstream guardar(nombreArchivo);
+  if (secuencias.size() == 0) {
+    std::cout << "No hay secuencias cargadas en memoria." << std::endl;
+    guardar.close();
+    return;
+  }
+  if (!guardar.is_open()) {
+    std::cout << "Error guardando en " << nombreArchivo << std::endl;
+    return;
+  }
+  for (int i = 0; i < secuencias.size(); i++) {
+    guardar << ">" << secuencias[i].nombre << "\n";
+    for (int j = 0; j < secuencias[i].contenido.size(); j++) {
+      guardar << secuencias[i].contenido[j] << "\n";
+    }
+  }
+
+  guardar.close();
+  std::cout << "Las secuencias han sido guardadas en " << nombreArchivo << std::endl;
 }
 
 std::vector<std::string> separarComando(std::string entrada) {
@@ -242,6 +295,7 @@ std::vector<std::string> separarComando(std::string entrada) {
 void escribirComando(std::vector<Comando> ComandosExistentes) {
   std::string comando, argumento;
   std::vector<std::string> argumentos;
+  ListaSecuencias secuenciasEnMemoria;
   while (comando != "salir") {
     bool comandoEncontrado = false;
     bool argumentosCorrectos = false;
@@ -250,7 +304,7 @@ void escribirComando(std::vector<Comando> ComandosExistentes) {
 
     argumentos = separarComando(comando);
     if (argumentos[0] == "ayuda") {
-      if ((int)argumentos.size() == 1) {
+      if ((int)argumentos.size() == 1 || ((int)argumentos.size() == 2 && argumentos[1] == "")) {
         std::cout << "COMANDOS DISPONIBLES" << std::endl;
         for (int i = 0; i < (int)ComandosExistentes.size(); i++) {
           std::cout << "-" << ComandosExistentes[i].nombre << std::endl;
@@ -273,11 +327,15 @@ void escribirComando(std::vector<Comando> ComandosExistentes) {
             comandoEncontrado = true;
           }
         }
-        if (comandoEncontrado == false) {
-          std::cout << "No se encontro el comando " << argumentos[1] << std::endl;
-          comandoEncontrado = true;
-        }
       }
+      if (comandoEncontrado == false) {
+        std::cout << "No se encontro ayuda para el comando \" ";
+        for (int i = 1; i < argumentos.size(); i++)
+          std::cout << argumentos[i];
+        std::cout << " \"" << std::endl;
+        comandoEncontrado = true;
+      }
+
     } else if (argumentos[0] != "salir") {
       for (int i = 0; i < (int)ComandosExistentes.size(); i++) {
         if (ComandosExistentes[i].nombre == argumentos[0]) {
@@ -293,14 +351,32 @@ void escribirComando(std::vector<Comando> ComandosExistentes) {
     }
 
     // Verifica el comando y la cantidad de argumentos escritos
-    if (comandoEncontrado == true) {
-      std::cout << "El comando fue encontrado";
+    if (comandoEncontrado == true && argumentos[0] != "ayuda") {
       if (argumentosCorrectos == true) {
-        std::cout << " y la cantidad de argumentos es correcta" << std::endl;
+        if (argumentos[0] == "cargar") {
+          std::cout << "Cargando archivo..." << std::endl;
+          secuenciasEnMemoria.cargar(argumentos[1].c_str());
+          std::cout << "Archivo cargado" << std::endl;
+        } else if (argumentos[0] == "listar_secuencias") {
+          std::cout << "Listando secuencias..." << std::endl;
+          secuenciasEnMemoria.listarSecuencia();
+        } else if (argumentos[0] == "histograma") {
+          std::cout << "Mostrando histograma..." << std::endl;
+          secuenciasEnMemoria.histograma(argumentos[1].c_str());
+        } else if (argumentos[0] == "es_subsecuencia") {
+          std::cout << "Buscando subsecuencia..." << std::endl;
+          secuenciasEnMemoria.esSubsecuencia(argumentos[1].c_str());
+        } else if (argumentos[0] == "enmascarar") {
+          std::cout << "Enmascarando subsecuencia..." << std::endl;
+          secuenciasEnMemoria.enmascarar(argumentos[1].c_str());
+        } else if (argumentos[0] == "guardar") {
+          std::cout << "Guardando datos..." << std::endl;
+          secuenciasEnMemoria.guardar(argumentos[1].c_str());
+        }
       } else {
-        std::cout << " pero la cantidad de argumentos es incorrecta" << std::endl;
+        std::cout << " La cantidad de argumentos es incorrecta" << std::endl;
       }
-    } else {
+    } else if (argumentos[0] != "ayuda" && argumentos[0] != "salir") {
       std::cout << "El comando no fue encontrado" << std::endl;
     }
   }

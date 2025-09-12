@@ -17,7 +17,7 @@ int main()
     hola.cargar(archivo);
     //hola.listarSecuencia();
     //hola.histograma(histograma);
-    hola.esSubsecuencia(subsecuencia);
+    //hola.esSubsecuencia(subsecuencia);
     while (ArchivoComandos.read((char *)&a, sizeof(Comando)))
     {
         ComandosExistentes.push_back(a);

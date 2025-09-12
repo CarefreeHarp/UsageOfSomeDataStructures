@@ -32,12 +32,12 @@ struct Secuencia{
 struct ListaSecuencias{
     std::vector<Secuencia> secuencias;
 
-    void cargar(char nombre[]);
+    void cargar(const char nombre[]);
     void listarSecuencia();
-    void histograma(char nombre[]);
-    void esSubsecuencia(char subsecuencia[]);
-    void enmascarar(char subsecuencia[]);
-    void guardar(char nombreArchivo[]);
+    void histograma(const char nombre[]);
+    void esSubsecuencia(const char subsecuencia[]);
+    void enmascarar(const char subsecuencia[]);
+    void guardar(const char nombreArchivo[]);
 };
 
 void crearComando();
