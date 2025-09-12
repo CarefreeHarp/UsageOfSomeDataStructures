@@ -56,6 +56,7 @@ void Codigos::cargar() {
     significado.push_back(cadena + 2);
     aux.push_back(cadena);
   }
+  std::cout << "El archivo fue cargado correctamente" << std::endl;
 }
 
 void ListaSecuencias::cargar(const char *nombre) {
@@ -63,13 +64,19 @@ void ListaSecuencias::cargar(const char *nombre) {
   Secuencia aux;
   strcpy(aux.nombre, "");
   char cadena[1000];
+  int contador = 0;
   std::ifstream cargar(nombre);
   if (!cargar) {
-    std::cout << "El archivo no fue cargado correctamente";
+     std::cout << nombre << " no se encuentra o no puede leerse." << std::endl;;
     return;
   }
+  if (cargar.peek() == std::ifstream::traits_type::eof()) {
+    std::cout << nombre << " no contiene ninguna secuencia" << std::endl;
+    return;
+  } 
   while (cargar.getline(cadena, 1000)) {
     if (cadena[0] == '>') {
+      contador++;
       if (strcmp(aux.nombre, "") != 0) {
         secuencias.push_back(aux);
       }
@@ -89,12 +96,18 @@ void ListaSecuencias::cargar(const char *nombre) {
     }
   }
   secuencias.push_back(aux);
+  std::cout << contador << " secuencias cargadas correctamente desde " << nombre << std::endl;
+  cargar.close();
 }
 
 void ListaSecuencias::listarSecuencia() {
   bool completa = true;
   int cantidadBases = 0;
   std::cout << "Hay " << secuencias.size() << " cargadas en memoria: " << std::endl;
+  if(secuencias.size() == 0){
+    std::cout << "No hay secuencias cargadas en memoria." << std::endl;
+    }
+    else{
   for (int i = 0; i < secuencias.size(); i++) {
     completa = true;
     cantidadBases = 0;
@@ -115,7 +128,9 @@ void ListaSecuencias::listarSecuencia() {
     } else {
       std::cout << " contiene al menos " << cantidadBases << " bases" << std::endl;
     }
+   }
   }
+  
 }
 
 void ListaSecuencias::histograma(const char nombre[]) {
@@ -151,7 +166,7 @@ void ListaSecuencias::histograma(const char nombre[]) {
       std::cout << std::endl;
     }
   } else {
-    std::cout << "Secuencia invalida ";
+    std::cout << "Secuencia invalida " <<std::endl;
   }
 }
 void ListaSecuencias::esSubsecuencia(const char subsecuencia[]) {
@@ -183,7 +198,6 @@ void ListaSecuencias::esSubsecuencia(const char subsecuencia[]) {
 
 void ListaSecuencias::enmascarar(const char subsecuencia[]) {
   char *ptr;
-
   int largoSubsecuencia = strlen(subsecuencia);
   int contador = 0;
   if (secuencias.size() != 0) {
@@ -207,7 +221,7 @@ void ListaSecuencias::enmascarar(const char subsecuencia[]) {
     return;
   }
   if (contador == 0) {
-    std::cout << "La subsecuencia dada no existe dentro de las secuencias cargadas en memoria" << std::endl;
+    std::cout << "La subsecuencia dada no existe dentro de las secuencias cargadas en memoria, por tanto no se enmascara nada." << std::endl;
   } else {
     std::cout << contador << " subsecuencias han sido enmascaradas dentro de las secuencias cargadas en memoria." << std::endl;
   }
@@ -356,7 +370,6 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
         if (argumentos[0] == "cargar") {
           std::cout << "Cargando archivo..." << std::endl;
           secuenciasEnMemoria.cargar(argumentos[1].c_str());
-          std::cout << "Archivo cargado" << std::endl;
         } else if (argumentos[0] == "listar_secuencias") {
           std::cout << "Listando secuencias..." << std::endl;
           secuenciasEnMemoria.listarSecuencia();
