@@ -2,8 +2,8 @@ CC = g++
 PROGRAMA = main.cpp
 PROCESO = ejecutable.out
 
-
-all:
-	rm $(PROCESO)
+CompilaryEjecutar:
 	$(CC) $(PROGRAMA) -o $(PROCESO)
 	./$(PROCESO)
+clean:
+	rm $(PROCESO)

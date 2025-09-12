@@ -292,7 +292,7 @@ std::vector<std::string> separarComando(std::string entrada) {
   return retorno;
 }
 
-void escribirComando(std::vector<Comando> ComandosExistentes) {
+void escribirComandos(std::vector<Comando> ComandosExistentes) {
   std::string comando, argumento;
   std::vector<std::string> argumentos;
   ListaSecuencias secuenciasEnMemoria;

@@ -42,7 +42,7 @@ struct ListaSecuencias{
 
 void crearComando();
 std::vector<std::string> separarComando(std::string entrada);
-void escribirComando(std::vector<Comando> ComandosExistentes);
+void escribirComandos(std::vector<Comando> ComandosExistentes);
 
 
 #endif

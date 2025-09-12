@@ -6,22 +6,12 @@ using namespace std;
 int main()
 {
     vector<Comando> ComandosExistentes;
-    Comando a;
+    Comando aux;
     fstream ArchivoComandos("comandos.guda", std::ios::binary | std::ios::in | std::ios::out);
-    ListaSecuencias hola;
-    char histograma[] = "Full_SEQUENCE";
-    Codigos jijija;
-    char archivo[] = "archivo.fa";
-    char subsecuencia[] = "GUILLERMOESGAY";
-    jijija.cargar();
-    hola.cargar(archivo);
-    //hola.listarSecuencia();
-    //hola.histograma(histograma);
-    //hola.esSubsecuencia(subsecuencia);
-    while (ArchivoComandos.read((char *)&a, sizeof(Comando)))
+    while (ArchivoComandos.read((char *)&aux, sizeof(Comando)))
     {
-        ComandosExistentes.push_back(a);
+        ComandosExistentes.push_back(aux);
     }
-    escribirComando(ComandosExistentes);
+    escribirComandos(ComandosExistentes);
     return 0;
 }

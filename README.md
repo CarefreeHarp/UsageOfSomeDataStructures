@@ -1,10 +1,9 @@
 # UsageOfSomeDataStructures — Proyecto (Estructuras de Datos)
 
 ## Descripción general
-Aplicación de consola que implementa el **Componente 1** del proyecto de Estructuras de Datos: operaciones básicas sobre archivos en formato **FASTA** usando **estructuras lineales**.  
+Aplicación de consola que implementa un proyecto de Estructuras de Datos: operaciones básicas sobre archivos en formato **FASTA** usando **estructuras lineales**.  
 Permite cargar secuencias, listarlas, generar histogramas, verificar subsecuencias, enmascararlas y guardarlas.
 
-Esta entrega **no** incluye los componentes 2 (Huffman) ni 3 (grafos).
 
 ## Estructura del repositorio
 ```
