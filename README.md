@@ -15,7 +15,7 @@ UsageOfSomeDataStructures/
 ├─ codigos.txt              # Asociación base → significado (A→Adenina, ...)
 ├─ comandos.guda            # Binario con las definiciones de comandos disponibles
 ├─ Makefile                 # Compilar y ejecutar
-└─ .vscode/settings.json    # Configuración del editor (opcional)
+└─ Proyecto.pdf             # Enunciado y descripcion del trabajo a realizar
 ```
 
 ### Archivos de datos
