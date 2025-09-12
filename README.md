@@ -24,8 +24,9 @@ UsageOfSomeDataStructures/
 - **comandos.guda**: archivo **binario** en el cual persiste la información de los **comandos disponibles**. Se modifica mediante la función interactiva `crearComando` (ver más abajo).
 
 ## Compilación
-Compilado con: `g++ 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04)`.  
-Probado con:   `g++ (tdm64-1) 10.3.0`
+Probado en:
+- Ubuntu 24.04 con g++ 13.3.0
+- Windows 10 con g++ 10.3.0 (tdm64-1)
 
 ### Opción 1: con Makefile (Linux/macOS)
 Dentro de `UsageOfSomeDataStructures/`:
