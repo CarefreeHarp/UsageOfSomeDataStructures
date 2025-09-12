@@ -33,10 +33,6 @@ Utilizando el fichero `Makefile`:
 ```bash
 make CompilaryEjecutar
 ```
-```bash
-g++ main.cpp -o ejecutable.out
-./ejecutable.out
-```
 
 ### Opción 2: manual
 ```bash
