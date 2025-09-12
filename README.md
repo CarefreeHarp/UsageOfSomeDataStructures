@@ -31,10 +31,8 @@ Probado en:
 ### Opción 1: con Makefile (Linux/macOS)
 Utilizando el fichero `Makefile`:
 ```bash
-make
+make CompilaryEjecutar
 ```
-El `Makefile` compila `main.cpp` a `ejecutable.out` y lo ejecuta.  
-Nota: la regla hace `rm ejecutable.out`; si el archivo no existe y tu `rm` falla, puedes ejecutar:
 ```bash
 g++ main.cpp -o ejecutable.out
 ./ejecutable.out
