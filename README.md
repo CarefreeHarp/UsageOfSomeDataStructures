@@ -77,62 +77,13 @@ Además soporta un sistema de ayuda con el comando 'ayuda' para ver los comandos
 - `ayuda` y `ayuda <comando>`  
   Lista los comandos existentes (según `comandos.guda`) y muestra su descripción y salidas posibles.
 
-## Flujo de uso recomendado
-1. **Cargar tabla de códigos** (automático dentro de tu `main.cpp` vía `Codigos::cargar()` leyendo `codigos.txt`).  
-2. **Cargar secuencias**:  
-   ```
-       $ cargar archivo.fa
-   ```
-3. **Listar** para validar:  
-   ```
-       $ listar_secuencias
-   ```
-4. **Consultar histograma** de una secuencia concreta:  
-   ```
-       $ histograma Full_SEQUENCE
-   ```
-5. **Buscar subsecuencia** o **enmascararla**:  
-   ```
-       $ es_subsecuencia ATGC
-       $ enmascarar ATGC
-   ```
-6. **Guardar cambios**:  
-   ```
-       $ guardar salida.fa
-   ```
-7. **Ayuda** general o por comando:  
-   ```
-       $ ayuda
-       $ ayuda cargar
-   ```
-
-## Sobre `comandos.guda` y `crearComando`
-- `comandos.guda` persiste un arreglo de estructuras `Comando` con los campos:
-  - `nombre` (char[50])
-  - `argumentos` (bool: si requiere argumento)
-  - `argumento` (char[50]: etiqueta/nombre del argumento)
-  - `descripcion` (char[1000])
-  - `posiblesSalidas` (char[1000])
-- La función `crearComando()` permite **agregar** comandos de forma interactiva; cada comando se añade al final del archivo binario.  
-- La consola (`escribirComando`) usa este archivo para:
-  - Validar si un comando existe.
-  - Verificar si necesita argumento o no.
-  - Proveer ayuda (`ayuda` / `ayuda <comando>`).
-
-> Si `comandos.guda` no existe o está vacío, la consola se ejecuta, pero no validará comandos (no habrá nada que listar en `ayuda`). En este repositorio se incluye un `comandos.guda` con definiciones base.
-
-## Notas de implementación
-- El programa manipula secuencias en memoria con **estructuras lineales** (vectores), acorde a la Entrega 1.  
-- El conteo del histograma incluye todos los símbolos definidos para FASTA, incluido `X` (máscara) y `-` (espacio de longitud indeterminada).  
-- Las operaciones de enmascarado se hacen in-place reemplazando caracteres por `X` en el contenido cargado.
-
-## Pruebas rápidas con los archivos de ejemplo
+## (EJEMPLO) Ejecución con los archivos existentes
 ```
     $ cargar archivo.fa
     $ listar_secuencias
     $ histograma Full_SEQUENCE
-    $ es_subsecuencia ATG
-    $ enmascarar ATG
+    $ es_subsecuencia GA
+    $ enmascarar GA
     $ guardar salida.fa
 ```
 Revisa el archivo `salida.fa` generado para verificar el guardado (estructura FASTA y líneas justificadas).
