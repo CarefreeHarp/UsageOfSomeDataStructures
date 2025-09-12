@@ -34,15 +34,10 @@ Utilizando el fichero `Makefile`:
 make CompilaryEjecutar
 ```
 
-### Opción 2: manual
+### Opción 2: manual (Linux/macOS/Windows)
 ```bash
 g++ main.cpp -o ejecutable.out
 ./ejecutable.out
-```
-
-En Windows (MinGW/WSL) el comando de compilación es el mismo; la ejecución sería:
-```bash
-ejecutable.out
 ```
 
 ## Ejecución e interfaz
