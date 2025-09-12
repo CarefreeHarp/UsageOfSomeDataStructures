@@ -48,9 +48,7 @@ Al iniciar, la aplicación abre una **consola interactiva** con prompt:
 La consola valida comandos y su cantidad de argumentos con base en lo definido en `comandos.guda`.  
 Además soporta un sistema de ayuda con el comando 'ayuda' para ver los comandos disponibles y el uso de cada uno.
 
-### Comandos soportados (Componente 1)
-A continuación se lista el comportamiento implementado en esta entrega (coincide con el enunciado):
-
+### Comandos soportados
 - `cargar <nombre_archivo>`  
   Carga en memoria las secuencias del archivo FASTA indicado.  
   Mensajes esperados (según contenido):
