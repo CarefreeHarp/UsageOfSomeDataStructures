@@ -20,11 +20,12 @@ UsageOfSomeDataStructures/
 
 ### Archivos de datos
 - **archivo.fa**: ejemplo de genoma en formato FASTA, con dos secuencias (`>Full_SEQUENCE` y `>Incomplete_sequence`).  
-- **codigos.txt**: mapeo textual de símbolos a su significado biológico (A, C, G, T, U, R, …, X, `-`). El programa lo usa para cargar en memoria la “leyenda” de códigos.  
-- **comandos.guda**: archivo **binario** que persiste la información de los **comandos disponibles**. Se modifica mediante la función interactiva `crearComando` (ver más abajo).
+- **codigos.txt**: mapeo textual de símbolos a su significado biológico (A, C, G, T, U, R, …, X, `-`). El programa lo usa para cargar en memoria los códigos.
+- **comandos.guda**: archivo **binario** en el cual persiste la información de los **comandos disponibles**. Se modifica mediante la función interactiva `crearComando` (ver más abajo).
 
 ## Compilación
-Requisitos: `g++` (mínimo 4.0.0).
+Compilado con: `g++ 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04)`.
+Probado con:   `g++ (tdm64-1) 10.3.0`
 
 ### Opción 1: con Makefile (Linux/macOS)
 Dentro de `UsageOfSomeDataStructures/`:
