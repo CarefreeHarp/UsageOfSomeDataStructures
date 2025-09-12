@@ -29,7 +29,7 @@ Probado en:
 - Windows 11 con g++ 10.3.0 (tdm64-1)
 
 ### Opción 1: con Makefile (Linux/macOS)
-Dentro de `UsageOfSomeDataStructures/`:
+Utilizando el fichero `Makefile/`:
 ```bash
 make
 ```
