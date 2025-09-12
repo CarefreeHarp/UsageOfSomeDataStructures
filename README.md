@@ -89,6 +89,5 @@ Además soporta un sistema de ayuda con el comando 'ayuda' para ver los comandos
 Revisa el archivo `salida.fa` generado para verificar el guardado (estructura FASTA y líneas justificadas).
 
 ## Créditos
-- Autor: Daniel Ramírez (UsageOfSomeDataStructures).
+- Autores: Daniel Ramírez y Guillermo Aponte 
 - Curso: Estructuras de Datos — Pontificia Universidad Javeriana.
-- Entrega: #1 — Componente 1.
