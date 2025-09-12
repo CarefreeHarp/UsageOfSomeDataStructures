@@ -1,4 +1,4 @@
-# UsageOfSomeDataStructures — Entrega 1 (Estructuras de Datos)
+# UsageOfSomeDataStructures — Proyecto (Estructuras de Datos)
 
 ## Descripción general
 Aplicación de consola que implementa el **Componente 1** del proyecto de Estructuras de Datos: operaciones básicas sobre archivos en formato **FASTA** usando **estructuras lineales**.  
