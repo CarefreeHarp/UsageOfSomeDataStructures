@@ -51,10 +51,6 @@ Además soporta un sistema de ayuda con el comando 'ayuda' para ver los comandos
 ### Comandos soportados
 - `cargar <nombre_archivo>`  
   Carga en memoria las secuencias del archivo FASTA indicado.  
-  Mensajes esperados (según contenido):
-  - `n secuencias cargadas correctamente desde <nombre_archivo>.`  
-  - `<nombre_archivo> no contiene ninguna secuencia.`  
-  - `<nombre_archivo> no se encuentra o no puede leerse.`
 
 - `listar_secuencias`  
   Imprime cuántas secuencias hay en memoria y, por cada una:
@@ -62,19 +58,17 @@ Además soporta un sistema de ayuda con el comando 'ayuda' para ver los comandos
   - Si es **incompleta** (contiene `-`): `Secuencia <descripcion> contiene al menos b bases`
 
 - `histograma <descripcion_secuencia>`  
-  Muestra el conteo de cada símbolo en la secuencia.  
-  Implementación actual: el programa imprime un resumen **por línea** de la secuencia (muestra `Linea <k>` y luego los conteos `A: x C: y ... '-' : z`).
+  Muestra el conteo de cada símbolo en la secuencia solicitada.  
 
 - `es_subsecuencia <subsecuencia>`  
   Cuenta cuántas veces aparece la subsecuencia en **todas** las secuencias cargadas.  
-  Si no hay secuencias en memoria, imprime el mensaje correspondiente.
 
 - `enmascarar <subsecuencia>`  
   Reemplaza todas las ocurrencias de la subsecuencia por `X` en las secuencias cargadas.  
   Al finalizar informa cuántas subsecuencias fueron enmascaradas o si no encontró ninguna.
 
 - `guardar <nombre_archivo>`  
-  Escribe en disco las secuencias actualmente en memoria (incluyendo enmascarado).  
+  Escribe en archivo nuevo con el nombre solicitado las secuencias actualmente en memoria (incluyendo enmascarado).  
   Mantiene la justificación por líneas tal como fue cargada. Informa éxito o error al guardar.
 
 - `salir`  
