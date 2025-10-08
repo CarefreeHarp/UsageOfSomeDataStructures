@@ -5,5 +5,6 @@ PROCESO = ejecutable.out
 CompilaryEjecutar:
 	$(CC) $(PROGRAMA) -o $(PROCESO)
 	./$(PROCESO)
+	rm $(PROCESO)
 clean:
 	rm $(PROCESO)
