@@ -1,4 +1,5 @@
-#include "proyecto.h"
+#include "componente1.h"
+#include "componente2.hxx"
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -385,6 +386,8 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
         } else if (argumentos[0] == "guardar") {
           std::cout << "Guardando datos..." << std::endl;
           secuenciasEnMemoria.guardar(argumentos[1].c_str());
+        } else if (argumentos[0] == "codificar") {
+          ArbolDeCodificacionHuffman Arbol(argumentos[1], secuenciasEnMemoria);
         }
       } else {
         std::cout << " La cantidad de argumentos es incorrecta" << std::endl;

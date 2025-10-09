@@ -1,5 +1,5 @@
-#ifndef __PROYECTO_H__
-#define __PROYECTO_H__
+#ifndef __COMPONENTE1_H__
+#define __COMPONENTE1_H__
 
 #include <string>
 #include <vector>
@@ -25,9 +25,7 @@ struct Secuencia{
     char nombre[50];
     std::vector<char*> contenido;
     int ancho;
-
-
-    };
+};
 
 struct ListaSecuencias{
     std::vector<Secuencia> secuencias;
