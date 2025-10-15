@@ -1,14 +1,13 @@
 #include "componente2.h"
-#include <iostream>
 #include <cctype>
-
+#include <iostream>
 
 /*FUNCION OPERATOR HECHO CON CHATGPT*/
 /*SIRVE PARA LA COMPARACION DE PRIORIDAD EN LA TABLA DE HUFFMAN*/
-bool CompararFrecuencia::operator()(const elementoTablaDeHuffman& a, const elementoTablaDeHuffman& b) const {
+bool CompararFrecuencia::operator()(const elementoTablaDeHuffman a, const elementoTablaDeHuffman b) const {
     // Devuelve true si 'a' tiene MAYOR frecuencia que 'b'
     // porque eso hace que 'b' (el más chico) suba al top()
-    return a.frecuencia > b.frecuencia;
+    return a.numeroFrecuencia > b.numeroFrecuencia;
 }
 
 NodoHuffman::NodoHuffman(int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuffman* hijoIzquierdo) : frecuencia(valorFrecuencia), hijoIzquierdo(hijoIzquierdo), hijoDerecho(hijoDerecho) {
@@ -22,7 +21,7 @@ NodoHuffman::NodoHuffman(int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuff
 
 }
 
-ArbolDeCodificacionHuffman::ArbolDeCodificacionHuffman(string mensaje){
-
+ArbolDeCodificacionHuffman::ArbolDeCodificacionHuffman(std::string mensaje, ListaSecuencias secuenciasEnMemoria){
+    
 }
 

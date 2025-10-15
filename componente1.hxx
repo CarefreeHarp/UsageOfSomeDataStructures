@@ -1,8 +1,7 @@
 #include "componente1.h"
-#include "componente2.hxx"
 #include <cstring>
 #include <fstream>
-#include <iostream>
+#include "componente2.hxx"
 #include <string>
 void crearComando() {
   char otro = 'Y';

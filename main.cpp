@@ -1,5 +1,4 @@
 #include "componente1.hxx"
-#include "componente2.hxx"
 #include <vector>
 #include <cstring>
 using namespace std;

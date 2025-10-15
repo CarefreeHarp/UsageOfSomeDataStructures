@@ -10,13 +10,13 @@ struct NodoHuffman{
     NodoHuffman* hijoIzquierdo;
     NodoHuffman* hijoDerecho;
 
-    NodoHuffman();
+    NodoHuffman(int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuffman* hijoIzquierdo);
 };
 
 struct ArbolDeCodificacionHuffman{
     NodoHuffman* raiz;
 
-    ArbolDeCodificacionHuffman(string mensaje);
+    ArbolDeCodificacionHuffman(std::string mensaje, ListaSecuencias secuenciasEnMemoria);
 };
 
 struct elementoTablaDeHuffman{
@@ -28,6 +28,6 @@ struct elementoTablaDeHuffman{
 /*SIRVE PARA LA COMPARACION DE PRIORIDAD EN LA TABLA DE HUFFMAN*/
 struct CompararFrecuencia {
     bool operator()(const elementoTablaDeHuffman a, const elementoTablaDeHuffman b) const;
-}
+};
 
 #endif
