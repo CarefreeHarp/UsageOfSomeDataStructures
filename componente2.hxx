@@ -4,6 +4,8 @@
 #include <vector>
 #include <queue>
 #include <cstdint>
+#include <bitset>
+
 
 
 /*FUNCION OPERATOR HECHO CON CHATGPT*/
@@ -102,22 +104,31 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
         codigosHuffman.push_back(this -> raiz -> buscarHoja(this -> raiz, tablaDeHuffmanDesordenada[i].nombre));
     }
 
-
-
-
-    /* YA SOLO FALTA CODIFICAR CADA SECUENCIA EN BASE A ESOS DOS ARREGLOS PARALELOS AHHHH*/
-
-
-
-
-
+    /*En cada posicion del vector secuenciasCodificadas, se guarda la cadena de 1s y 0s de cada
+    una de las secuencias cargadas en memoria :D */
+    std::vector<std::string> secuenciasCodificadas;
+    for(int i = 0; i < secuenciasEnMemoria.secuencias.size() ; i++){
+        std::string codificacion = "";
+        for(int j = 0; j < secuenciasEnMemoria.secuencias[i].contenido.size() ; j++){
+            int k = 0;
+            while(*(secuenciasEnMemoria.secuencias[i].contenido[j] + k) != '\0'){
+                for(int l = 0; l < caracteresHuffman.size();l++){
+                    if(std::string(1,*(secuenciasEnMemoria.secuencias[i].contenido[j] + k)) == caracteresHuffman[l]){
+                        codificacion += codigosHuffman[l];
+                    }
+                }
+                k++;
+            }
+        }
+        secuenciasCodificadas.push_back(codificacion);
+    }
 
 
 
 
     std::ofstream archivo(nombrefabin, std::ios::binary);
     if (!archivo) {
-        std::cerr << "El archivo fabin no fue creado correctamente" << std::endl;
+        std::cout << "El archivo fabin no fue creado correctamente" << std::endl;
         return;
     }
 
@@ -138,7 +149,7 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
     archivo.write(reinterpret_cast<char*>(&ns), sizeof(ns));
 
 
-    //escritura de las secuencias
+    //escritura de los nombres de las secuencias
     for (int i = 0; i < secuenciasEnMemoria.secuencias.size(); i++) {
         Secuencia seq = secuenciasEnMemoria.secuencias[i];
 
@@ -149,6 +160,36 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
         //el nombre de la secuencia como tal
         archivo.write(seq.nombre, li);
     }
+
+    for (int i = 0; i < secuenciasEnMemoria.secuencias.size(); i++) {
+    Secuencia seq = secuenciasEnMemoria.secuencias[i];
+
+    // calcular wi (longitud total real)
+    uint64_t wi = 0;
+    for (int j = 0; j < seq.contenido.size(); j++) {
+        wi += strlen(seq.contenido[j]);
+    }
+    archivo.write(reinterpret_cast<char*>(&wi), sizeof(wi));
+
+    // xi (ancho)
+    uint16_t xi = seq.ancho;
+    archivo.write(reinterpret_cast<char*>(&xi), sizeof(xi));
+
+    // escribir los bits codificados como bytes
+    std::string bits = secuenciasCodificadas[i];
+
+    // rellenar hasta múltiplo de 8
+    while (bits.size() % 8 != 0)
+        bits += '0';
+
+    /*Esta parte se encarga de traducir los 1s y 0s en bytes a bits literales y los escribe en el archivo 
+    utilizando la libreria bitset */    
+    for (size_t b = 0; b < bits.size(); b += 8) { 
+        std::bitset<8> byte(bits.substr(b, 8));
+        unsigned char valor = static_cast<unsigned char>(byte.to_ulong());
+        archivo.write(reinterpret_cast<char*>(&valor), 1);
+    }
+}
 
 
 
