@@ -5,18 +5,18 @@
 
 struct NodoHuffman{
     int frecuencia;
-    char caracter;
+    std::string nombre;
 
     NodoHuffman* hijoIzquierdo;
     NodoHuffman* hijoDerecho;
 
-    NodoHuffman(int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuffman* hijoIzquierdo);
+    NodoHuffman(std::string nombre, int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuffman* hijoIzquierdo);
 };
 
 struct ArbolDeCodificacionHuffman{
     NodoHuffman* raiz;
 
-    ArbolDeCodificacionHuffman(std::string mensaje, ListaSecuencias secuenciasEnMemoria);
+    void comprimirSecuencias(std::string nombrefabin, ListaSecuencias secuenciasEnMemoria);
 };
 
 struct elementoTablaDeHuffman{
@@ -27,7 +27,7 @@ struct elementoTablaDeHuffman{
 /*FUNCION OPERATOR HECHO CON CHATGPT*/
 /*SIRVE PARA LA COMPARACION DE PRIORIDAD EN LA TABLA DE HUFFMAN*/
 struct CompararFrecuencia {
-    bool operator()(const elementoTablaDeHuffman a, const elementoTablaDeHuffman b) const;
+    bool operator()(const NodoHuffman* a, const NodoHuffman* b) const;
 };
 
 #endif

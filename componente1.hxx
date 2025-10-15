@@ -11,7 +11,6 @@ void crearComando() {
     bool correcto = false;
     std::cout << "bienvenido a la creacion de comandos" << std::endl;
     std::cout << "Digite el nombre del comando" << std::endl;
-    std::cin.ignore();
     std::cin.getline(comando.nombre, 50);
 
     while (correcto == false) {
@@ -39,6 +38,7 @@ void crearComando() {
     }
     std::cout << "Desea crear otro comando? y/n\t";
     std::cin >> otro;
+    std::cin.ignore();
   }
 }
 
@@ -386,7 +386,8 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
           std::cout << "Guardando datos..." << std::endl;
           secuenciasEnMemoria.guardar(argumentos[1].c_str());
         } else if (argumentos[0] == "codificar") {
-          ArbolDeCodificacionHuffman Arbol(argumentos[1], secuenciasEnMemoria);
+          ArbolDeCodificacionHuffman Arbol;
+          Arbol.comprimirSecuencias(argumentos[1], secuenciasEnMemoria);
         }
       } else {
         std::cout << " La cantidad de argumentos es incorrecta" << std::endl;
