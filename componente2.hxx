@@ -18,7 +18,7 @@ bool CompararFrecuencia::operator()(const NodoHuffman* a, const NodoHuffman* b) 
 
 //esta funcion devuelve el codigo huffman asociado a un caracter enviado como parametro
 std::string NodoHuffman::buscarHoja(NodoHuffman* nodoActual, std::string nombreBuscar){
-    string retorno;
+    std::string retorno;
     if(nodoActual -> nombre.length() == 1){
         if(nodoActual -> nombre == nombreBuscar){
             return "";
@@ -38,6 +38,7 @@ std::string NodoHuffman::buscarHoja(NodoHuffman* nodoActual, std::string nombreB
             }
         }
     }
+    return "";
 }
 
 NodoHuffman::NodoHuffman(std::string valorNombre, int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuffman* hijoIzquierdo) : nombre (valorNombre), frecuencia(valorFrecuencia), hijoIzquierdo(hijoIzquierdo), hijoDerecho(hijoDerecho) {}
