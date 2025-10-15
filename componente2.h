@@ -11,6 +11,7 @@ struct NodoHuffman{
     NodoHuffman* hijoDerecho;
 
     NodoHuffman(std::string nombre, int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuffman* hijoIzquierdo);
+    std::string buscarHoja(NodoHuffman* nodoActual, std::string nombreBuscar);
 };
 
 struct ArbolDeCodificacionHuffman{
