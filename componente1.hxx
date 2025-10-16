@@ -39,6 +39,7 @@ void crearComando() {
     std::cout << "Desea crear otro comando? y/n\t";
     std::cin >> otro;
     std::cin.ignore();
+    archivo.close();
   }
 }
 
@@ -57,6 +58,7 @@ void Codigos::cargar() {
     aux.push_back(cadena);
   }
   std::cout << "El archivo fue cargado correctamente" << std::endl;
+  cargar.close();
 }
 
 void ListaSecuencias::cargar(const char *nombre) {
@@ -314,7 +316,9 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
     bool comandoEncontrado = false;
     bool argumentosCorrectos = false;
     std::cout << "\t$";
+  freopen("/dev/tty", "r", stdin);
     getline(std::cin, comando);
+
 
     argumentos = separarComando(comando);
     if (argumentos[0] == "ayuda") {
@@ -388,6 +392,9 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
         } else if (argumentos[0] == "codificar") {
           ArbolDeCodificacionHuffman Arbol;
           Arbol.comprimirSecuencias(argumentos[1], secuenciasEnMemoria);
+        } else if (argumentos[0] == "decodificar") {
+          ArbolDeCodificacionHuffman Arbol;
+          Arbol.descomprimirSececuencias(argumentos[1], secuenciasEnMemoria);
         }
       } else {
         std::cout << " La cantidad de argumentos es incorrecta" << std::endl;

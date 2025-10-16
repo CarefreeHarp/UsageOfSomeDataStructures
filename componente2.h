@@ -12,12 +12,15 @@ struct NodoHuffman{
 
     NodoHuffman(std::string nombre, int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuffman* hijoIzquierdo);
     std::string buscarHoja(NodoHuffman* nodoActual, std::string nombreBuscar);
+    void borrarArbol(NodoHuffman* nodo);
+
 };
 
 struct ArbolDeCodificacionHuffman{
     NodoHuffman* raiz;
 
     void comprimirSecuencias(std::string nombrefabin, ListaSecuencias secuenciasEnMemoria);
+    void descomprimirSececuencias(std::string nombrefabin, ListaSecuencias& secuenciasEnMemoria); 
 };
 
 struct elementoTablaDeHuffman{
