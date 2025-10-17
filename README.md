@@ -3,6 +3,7 @@
 ## Descripción general
 Aplicación de consola que implementa un proyecto de Estructuras de Datos: operaciones básicas sobre archivos en formato **FASTA** usando **estructuras lineales**.  
 Permite cargar secuencias, listarlas, generar histogramas, verificar subsecuencias, enmascararlas y guardarlas.
+  Además utilizando **árboles de codificación** con el algoritmo de Huffman, se permite comprimir y descomprimir la información de archivos .fa (FASTA) en archivos binarios .fabin
 
 
 ## Estructura del repositorio
