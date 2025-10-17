@@ -13,7 +13,7 @@ UsageOfSomeDataStructures/
 ├─ componente1.h            # Declaraciones (structs y prototipos) pertenecientes al componente 1 del proyecto
 ├─ componente1.hxx          # Implementaciones (I/O, lógica de comandos y consola) pertenecientes al componente 1 del proyecto
 ├─ componente2.h            # Declaraciones (structs y prototipos) pertenecientes al componente 2 del proyecto
-├─ componente2.hxx          # Implementaciones (I/O, lógica de comandos y consola) pertenecientes al componente 2 del proyecto
+├─ componente2.hxx          # Implementaciones (arboles de codificación) pertenecientes al componente 2 del proyecto
 ├─ archivo.fa               # Archivo FASTA de ejemplo
 ├─ codigos.txt              # Asociación base → significado (A→Adenina, ...)
 ├─ comandos.guda            # Binario con las definiciones de comandos disponibles
