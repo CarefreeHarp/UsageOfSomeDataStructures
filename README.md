@@ -71,6 +71,15 @@ Además soporta un sistema de ayuda con el comando 'ayuda' para ver los comandos
   Escribe en archivo nuevo con el nombre solicitado las secuencias actualmente en memoria (incluyendo enmascarado).  
   Mantiene la justificación por líneas tal como fue cargada. Informa éxito o error al guardar.
 
+- `codificar <nombre_archivo.fabin>`  
+  Por medio del algoritmo de Huffman y con la estructura especificada en el componente2 del pdf del proyecto, se
+  comprime la información de todas las secuencias cargadas en memoria y se guardan en un archivo binario con el nombre especificado.
+
+- `decodificar <nombre_archivo.fabin>`  
+  Por medio del algoritmo de Huffman y con la estructura especificada en el componente2 del pdf del proyecto, se
+  descomprime la información de un archivo .fabin solicitado por el usuario y se carga en memoria la información de todas las secuencias
+  reemplazando las que ya hubiese ahí.
+
 - `salir`  
   Termina la ejecución.
 
