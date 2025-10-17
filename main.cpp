@@ -8,7 +8,7 @@ int main()
     vector<Comando> ComandosExistentes;
     Comando aux;
     fstream ArchivoComandos("comandos.guda", std::ios::binary | std::ios::in | std::ios::out);
-    while (ArchivoComandos.read((char *)&aux, sizeof(Comando)))
+    while (ArchivoComandos.read((char *)&aux, sizeof(Comando))) //carga los comandos del archivo comandos.guda
     {
         ComandosExistentes.push_back(aux);
     }

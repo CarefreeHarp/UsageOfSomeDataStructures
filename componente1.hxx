@@ -328,7 +328,7 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
       } else if ((int)argumentos.size() == 2) {
         for (int i = 0; i < (int)ComandosExistentes.size(); i++) {
           if (ComandosExistentes[i].nombre == argumentos[1]) {
-            std::cout << "Ayuda para el comando: " << std::endl
+            std::cout <<std::endl<<std::endl<< "Ayuda para el comando: " << std::endl
                       << argumentos[1];
             if (ComandosExistentes[i].argumentos == true)
               std::cout << " <Argumento Necesario>";
@@ -339,12 +339,12 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
             std::cout << ComandosExistentes[i].descripcion << std::endl
                       << std::endl;
             std::cout << "Salidas posibles del comando " << argumentos[1] << std::endl;
-            std::cout << ComandosExistentes[i].posiblesSalidas;
+            std::cout << ComandosExistentes[i].posiblesSalidas<<std::endl<<std::endl;
             comandoEncontrado = true;
           }
         }
       }
-      if (comandoEncontrado == false) {
+      if (comandoEncontrado == false && argumentos.size() > 1) {
         std::cout << "No se encontro ayuda para el comando \" ";
         for (int i = 1; i < argumentos.size(); i++)
           std::cout << argumentos[i];

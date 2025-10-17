@@ -140,7 +140,7 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
             }
         }
         secuenciasCodificadas.push_back(codificacion);
-        std::cout<<std::endl<<"SECUENCIA #"<< i <<": "<<codificacion<<" (sin rellenar con 0's)"<<std::endl<<std::endl;
+        std::cout<<std::endl<<"SECUENCIA #"<< i+1 <<": "<<codificacion<<" (sin rellenar con 0's)"<<std::endl<<std::endl;
     }
 
 
@@ -155,18 +155,35 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
     //escritura de 2 bytes en el archivo indicando la cantidad de bases(letras/caracteres) encontradas
     uint16_t n = static_cast<uint16_t>(tablaDeHuffmanDesordenada.size());
     archivo.write(reinterpret_cast<char*>(&n), sizeof(n));
+    if (!archivo) {
+        std::cerr << "Error al escribir en el archivo.\n";
+        return;
+    }
 
     //escritura de cada símbolo y su frecuencia, 1 y 8 bytes respectivamente
     for (int i = 0; i < tablaDeHuffmanDesordenada.size(); i++) {
         char c = tablaDeHuffmanDesordenada[i].nombre[0];  // un solo char
         uint64_t f = static_cast<uint64_t>(tablaDeHuffmanDesordenada[i].numeroFrecuencia);
         archivo.write(&c, sizeof(c));
+        if (!archivo) {
+            std::cerr << "Error al escribir en el archivo.\n";
+            return;
+        }
         archivo.write(reinterpret_cast<char*>(&f), sizeof(f));
+        if (!archivo) {
+            std::cerr << "Error al escribir en el archivo.\n";
+            return;
+        }
     }
 
     //escritura de 4 bytes indicando la cantidad de secuencias
     uint32_t ns = secuenciasEnMemoria.secuencias.size();
     archivo.write(reinterpret_cast<char*>(&ns), sizeof(ns));
+    if (!archivo) {
+        std::cerr << "Error al escribir en el archivo.\n";
+        return;
+    }
+
 
 
     //escritura de los nombres de las secuencias
@@ -176,9 +193,19 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
         // li es longitud del nombre
         uint16_t li = strlen(seq.nombre);
         archivo.write(reinterpret_cast<char*>(&li), sizeof(li));
+        if (!archivo) {
+            std::cerr << "Error al escribir en el archivo.\n";
+            return;
+        }
+
 
         //el nombre de la secuencia como tal
         archivo.write(seq.nombre, li);
+        if (!archivo) {
+            std::cerr << "Error al escribir en el archivo.\n";
+            return;
+        }
+
     }
 
     for (int i = 0; i < secuenciasEnMemoria.secuencias.size(); i++) {
@@ -190,10 +217,20 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
             wi += strlen(seq.contenido[j]);
         }
         archivo.write(reinterpret_cast<char*>(&wi), sizeof(wi));
+        if (!archivo) {
+            std::cerr << "Error al escribir en el archivo.\n";
+            return;
+        }
+
 
         // xi (ancho)
         uint16_t xi = seq.ancho;
         archivo.write(reinterpret_cast<char*>(&xi), sizeof(xi));
+        if (!archivo) {
+            std::cerr << "Error al escribir en el archivo.\n";
+            return;
+        }
+
 
         // escribir los bits codificados como bytes
         std::string bits = secuenciasCodificadas[i];
@@ -215,9 +252,15 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
 
             //lo escribe en el archivo
             archivo.write(reinterpret_cast<char*>(&valor), 1);
+            if (!archivo) {
+                std::cerr << "Error al escribir en el archivo.\n";
+                return;
+            }
+
         }
     }
     archivo.close();
+    std::cout<<std::endl<<std::endl<<" SECUENCIA CODIFICADA CON EXITO EN EL ARCHIVO \" "<<nombrefabin<<" \""<<std::endl;
 }
 
 
@@ -239,6 +282,10 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
     //la cantidad de bases(letras/caracteres) encontradas
     uint16_t n;
     archivo.read(reinterpret_cast<char*>(&n), sizeof(n));
+    if (!archivo) {
+        std::cerr << "Error al leer del archivo.\n";
+        return;
+    }
     
     //lectura de cada símbolo y su frecuencia, 1 y 8 bytes respectivamente
     std::vector<elementoTablaDeHuffman> tablaDeHuffmanDesordenada; 
@@ -246,7 +293,15 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         char c;  // un solo char
         uint64_t f;
         archivo.read(&c, sizeof(c));
+            if (!archivo) {
+                std::cerr << "Error al leer del archivo.\n";
+                return;
+            }
         archivo.read(reinterpret_cast<char*>(&f), sizeof(f));
+            if (!archivo) {
+                std::cerr << "Error al leer del archivo.\n";
+                return;
+            }
         elementoTablaDeHuffman nuevoElemento;
         nuevoElemento.nombre = std::string(1,c);
         nuevoElemento.numeroFrecuencia = f;
@@ -287,6 +342,10 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
     //lectura de 4 bytes indicando la cantidad de secuencias
     uint32_t ns;
     archivo.read(reinterpret_cast<char*>(&ns), sizeof(ns));
+    if (!archivo) {
+        std::cerr << "Error al leer del archivo.\n";
+        return;
+    }
 
     for (Secuencia& seqVieja : secuenciasEnMemoria.secuencias) {
         for (char* lineaPtr : seqVieja.contenido) {
@@ -303,9 +362,17 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         // li es longitud del nombre
         uint16_t li;
         archivo.read(reinterpret_cast<char*>(&li), sizeof(li));
+        if (!archivo) {
+            std::cerr << "Error al leer del archivo.\n";
+            return;
+        }
         
         //el nombre de la secuencia como tal
         archivo.read(seq.nombre, li);
+        if (!archivo) {
+            std::cerr << "Error al leer del archivo.\n";
+            return;
+        }
         seq.nombre[li] = '\0'; // Asegurarse de que el nombre esté terminado en null
 
         secuenciasEnMemoria.secuencias.push_back(seq);
@@ -316,11 +383,19 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         // leer wi (longitud total real)
         uint64_t wi;
         archivo.read(reinterpret_cast<char*>(&wi), sizeof(wi));
+        if (!archivo) {
+            std::cerr << "Error al leer del archivo.\n";
+            return;
+        }
         
 
         // leer xi (ancho)
         uint16_t xi;
         archivo.read(reinterpret_cast<char*>(&xi), sizeof(xi));
+        if (!archivo) {
+            std::cerr << "Error al leer del archivo.\n";
+            return;
+        }
         seq->ancho = xi;
 
         std::string bitsLeidos;   // aquí queda el "binary_code" como string de 0/1
@@ -331,6 +406,10 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         while (secuenciaDecodificada.size() < wi) { //  < wi para saber cuando decodificamos todo sin tener en cuenta los 0 de relleno
             unsigned char byte; //dato de un solo byte
             archivo.read(reinterpret_cast<char*>(&byte), 1); //leemos exactamente 1 byte
+            if (!archivo) {
+                std::cerr << "Error al leer del archivo.\n";
+                return;
+            }
 
             //las siguientes 4 lineas de codigo las hizo CHATGPT, son utilizadas para ir concatenando bit a bit para verificar
             //si es una base nitrogenada valida para decodificar
@@ -362,4 +441,6 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         seq->contenido = lineas;
     }
     archivo.close();
+    std::cout<<std::endl<<std::endl<<"GUARDANDO SECUENCIA DECODIFICADA EN MEMORIA... "<<std::endl;
+    std::cout<<"SECUENCIA DECODIFICADA EXITOSAMENTE DESDE EL ARCHIVO \" "<<nombrefabin<<" \""<<std::endl;
 }
