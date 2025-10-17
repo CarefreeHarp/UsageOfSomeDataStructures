@@ -46,7 +46,7 @@ std::string NodoHuffman::buscarHoja(NodoHuffman* nodoActual, std::string nombreB
             }
         }
     }
-    return "";
+    return "F";
 }
 
 NodoHuffman::NodoHuffman(std::string valorNombre, int valorFrecuencia, NodoHuffman* hijoDerecho, NodoHuffman* hijoIzquierdo) : nombre (valorNombre), frecuencia(valorFrecuencia), hijoIzquierdo(hijoIzquierdo), hijoDerecho(hijoDerecho) {}
@@ -60,6 +60,10 @@ NodoHuffman::NodoHuffman(std::string valorNombre, int valorFrecuencia, NodoHuffm
 //utilizamos chatGPT para escribir en el archivo binario utilizando tipos de datos 
 //estándar como uint8_t, uint32_t y uint64_t
 void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, ListaSecuencias secuenciasEnMemoria){
+    if(secuenciasEnMemoria.secuencias.size() == 0){
+        std::cout<<std::endl<<"No hay secuencias cargadas, cargue alguna e intente de nuevo"<<std::endl<<std::endl;
+        return;
+    }
     std::vector<elementoTablaDeHuffman> tablaDeHuffmanDesordenada; 
     bool encontrado;
     for(int i = 0; i < secuenciasEnMemoria.secuencias.size(); i++){
@@ -110,8 +114,14 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
     std::vector<std::string> caracteresHuffman;
     for(int i = 0; i < tablaDeHuffmanDesordenada.size(); i++){
         caracteresHuffman.push_back(tablaDeHuffmanDesordenada[i].nombre);
-        codigosHuffman.push_back(this -> raiz -> buscarHoja(this -> raiz, tablaDeHuffmanDesordenada[i].nombre));
+        std::string codigoAux = this -> raiz -> buscarHoja(this -> raiz, tablaDeHuffmanDesordenada[i].nombre);
+        if(codigoAux == "")
+            codigoAux = "0";
+        codigosHuffman.push_back(codigoAux);
     }
+
+    for(int i = 0 ; i < caracteresHuffman.size(); i++)
+        std::cout<<"Letra: "<<caracteresHuffman[i]<<"\tcodificacion: "<<codigosHuffman[i]<<std::endl;
 
     /*En cada posicion del vector secuenciasCodificadas, se guarda la cadena de 1s y 0s de cada
     una de las secuencias cargadas en memoria :D */
@@ -130,6 +140,7 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
             }
         }
         secuenciasCodificadas.push_back(codificacion);
+        std::cout<<std::endl<<"SECUENCIA #"<< i <<": "<<codificacion<<" (sin rellenar con 0's)"<<std::endl<<std::endl;
     }
 
 
@@ -137,7 +148,7 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
 
     std::ofstream archivo(nombrefabin, std::ios::binary);
     if (!archivo) {
-        std::cout << "El archivo fabin no fue creado correctamente" << std::endl;
+        std::cout << "El archivo "<<nombrefabin<<" solicitado, no pudo crearse" << std::endl;
         return;
     }
 
@@ -193,9 +204,16 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
 
         /*Esta parte se encarga de traducir los 1s y 0s en bytes a bits literales y los escribe en el archivo 
         utilizando la libreria bitset */    
-        for (size_t b = 0; b < bits.size(); b += 8) { 
-            std::bitset<8> byte(bits.substr(b, 8));
-            unsigned char valor = static_cast<unsigned char>(byte.to_ulong());
+        for (size_t b = 0; b < bits.size(); b += 8) {  //cada iteracion salta de a 8 caracteres
+
+            //substr toma 8 caracteres desde el caracter #b
+            //bitset<8> crea conjuntos de 8 bits en este caso
+            std::bitset<8> byte(bits.substr(b, 8)); 
+
+            //castea ese bitset en un char (un unico byte)
+            unsigned char valor = static_cast<unsigned char>(byte.to_ulong()); 
+
+            //lo escribe en el archivo
             archivo.write(reinterpret_cast<char*>(&valor), 1);
         }
     }
@@ -206,7 +224,6 @@ void ArbolDeCodificacionHuffman::comprimirSecuencias(std::string nombrefabin, Li
 
 
 void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabin, ListaSecuencias& secuenciasEnMemoria){
-    
     //se borra el arbol completo ya que estaba guardado en el heap
     //y debemos liberar la memoria antes de crear uno nuevo
     if (this->raiz != nullptr) {
@@ -215,10 +232,9 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
     
     std::ifstream archivo(nombrefabin, std::ios::binary);
     if (!archivo) {
-        std::cout << "El archivo fabin no fue abierto correctamente" << std::endl;
+        std::cout << "El archivo "<<nombrefabin<<" solicitado, no pudo abrirse" << std::endl;
         return;
     }
-
     //lectura de 2 bytes en el archivo indicando 
     //la cantidad de bases(letras/caracteres) encontradas
     uint16_t n;
@@ -236,8 +252,8 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         nuevoElemento.numeroFrecuencia = f;
         tablaDeHuffmanDesordenada.push_back(nuevoElemento);
     }
-
-       //creacion de la tabla de huffman ordenada
+    
+    //creacion de la tabla de huffman ordenada
     std::priority_queue<NodoHuffman*, std::vector<NodoHuffman*>, CompararFrecuencia> tablaDeHuffmanOrdenada;
     for(int i = 0; i < tablaDeHuffmanDesordenada.size(); i++){
         tablaDeHuffmanOrdenada.push(new NodoHuffman(tablaDeHuffmanDesordenada[i].nombre, tablaDeHuffmanDesordenada[i].numeroFrecuencia, nullptr, nullptr));
@@ -265,6 +281,9 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         codigosHuffman.push_back(this -> raiz -> buscarHoja(this -> raiz, tablaDeHuffmanDesordenada[i].nombre));
     }
 
+    for(int i = 0 ; i < caracteresHuffman.size(); i++)
+        std::cout<<"Letra: "<<caracteresHuffman[i]<<"\tcodificacion: "<<codigosHuffman[i]<<std::endl;
+
     //lectura de 4 bytes indicando la cantidad de secuencias
     uint32_t ns;
     archivo.read(reinterpret_cast<char*>(&ns), sizeof(ns));
@@ -274,7 +293,6 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
             delete[] lineaPtr;  // LIBERAMOS MEMORIA (siempre toca hacerlo)
         }
     }
-
     secuenciasEnMemoria.secuencias.clear();
 
 
@@ -288,6 +306,7 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         
         //el nombre de la secuencia como tal
         archivo.read(seq.nombre, li);
+        seq.nombre[li] = '\0'; // Asegurarse de que el nombre esté terminado en null
 
         secuenciasEnMemoria.secuencias.push_back(seq);
     }
@@ -297,59 +316,50 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
         // leer wi (longitud total real)
         uint64_t wi;
         archivo.read(reinterpret_cast<char*>(&wi), sizeof(wi));
+        
 
         // leer xi (ancho)
         uint16_t xi;
         archivo.read(reinterpret_cast<char*>(&xi), sizeof(xi));
         seq->ancho = xi;
 
-        // calcular la cantidad de bytes a leer
-        uint64_t totalBits = wi;
-        uint64_t totalBytes = (totalBits + 7) / 8; // redondear hacia arriba
-        //ya que se asegurará que siempre se leerán suficientes bits para cubrir wi 
-        //tendiendo en cuenta que para comprimir se se rellenó con ceros para completar 
-        //un multiplo de 8
+        std::string bitsLeidos;   // aquí queda el "binary_code" como string de 0/1
+        std::string codigoActual; // aquí acumulamos bits hasta que haces match con un código Huffman
+        std::string secuenciaDecodificada; // aquí va la secuencia decodificada completa
 
 
-        // leer los bytes codificados (HECHO CON CHATGPT)
-        //los bytes leidos se convierten a bits literales
-        //y luego se convierten en un string de 1s y 0s
-        //para facilitar la decodificacion posterior
-        std::string bitsLeidos = "";
-        for (uint64_t b = 0; b < totalBytes; b++) {
-            unsigned char byte;
-            archivo.read(reinterpret_cast<char*>(&byte), 1);
-            std::bitset<8> bits(byte);
-            bitsLeidos += bits.to_string();
-        }
+        while (secuenciaDecodificada.size() < wi) { //  < wi para saber cuando decodificamos todo sin tener en cuenta los 0 de relleno
+            unsigned char byte; //dato de un solo byte
+            archivo.read(reinterpret_cast<char*>(&byte), 1); //leemos exactamente 1 byte
 
-        //decodificacion de los bits leidos utilizando los arreglos paralelos
-        std::string secuenciaDecodificada = "";
-        std::string codigoActual = "";
+            //las siguientes 4 lineas de codigo las hizo CHATGPT, son utilizadas para ir concatenando bit a bit para verificar
+            //si es una base nitrogenada valida para decodificar
+            for (int b = 7; b >= 0 && secuenciaDecodificada.size() < wi; --b) {
+                char bit = ((byte >> b) & 1) ? '1' : '0';
+                bitsLeidos.push_back(bit);
+                codigoActual.push_back(bit);
 
-        //utilizamos un for each para recorrer cada caracter del string bitsLeidos
-        for (char bit : bitsLeidos) {
-            codigoActual += bit;
-            for (int k = 0; k < codigosHuffman.size(); k++) {
-                if (codigoActual == codigosHuffman[k]) {
-                    secuenciaDecodificada += caracteresHuffman[k];
-                    codigoActual = "";
-                    break;
+                //convertir esos bits a las bases (strings literales)
+                for (int k = 0; k < codigosHuffman.size(); ++k) {
+                    if (codigoActual == codigosHuffman[k]) {
+                        secuenciaDecodificada += caracteresHuffman[k];
+                        codigoActual.clear();
+                        break;
+                    }
                 }
             }
         }
 
-        //dividir la secuencia decodificada en lineas de ancho xi
+        // Divide en líneas de ancho xi y las guarda en secuencias en memoria ya que 
+        // la variable seq es un apuntador a las secuencias en memoria
         std::vector<char*> lineas;
-        for (int pos = 0; pos < secuenciaDecodificada.length(); pos += xi) {
-            std::string linea = secuenciaDecodificada.substr(pos, xi);//guardamos la linea en un string
-            char* lineaCStr = new char[linea.length() + 1]; // declaramos un arreglo de chars para guardar la linea
-            std::strcpy(lineaCStr, linea.c_str()); //con c_str convertimos el string a char*
-            lineas.push_back(lineaCStr); //guardamos el char* en el vector de lineas
+        for (size_t pos = 0; pos < secuenciaDecodificada.size(); pos += xi) {
+            std::string linea = secuenciaDecodificada.substr(pos, xi);
+            char* lineaCStr = new char[linea.size() + 1];
+            std::strcpy(lineaCStr, linea.c_str());
+            lineas.push_back(lineaCStr);
         }
-
         seq->contenido = lineas;
     }
     archivo.close();
- 
 }

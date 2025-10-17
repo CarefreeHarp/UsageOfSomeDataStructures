@@ -316,9 +316,7 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
     bool comandoEncontrado = false;
     bool argumentosCorrectos = false;
     std::cout << "\t$";
-  freopen("/dev/tty", "r", stdin);
     getline(std::cin, comando);
-
 
     argumentos = separarComando(comando);
     if (argumentos[0] == "ayuda") {
@@ -367,7 +365,6 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
         }
       }
     }
-
     // Verifica el comando y la cantidad de argumentos escritos
     if (comandoEncontrado == true && argumentos[0] != "ayuda") {
       if (argumentosCorrectos == true) {
