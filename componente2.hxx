@@ -275,7 +275,7 @@ void ArbolDeCodificacionHuffman::descomprimirSececuencias(std::string nombrefabi
     
     std::ifstream archivo(nombrefabin, std::ios::binary);
     if (!archivo) {
-        std::cout << "El archivo "<<nombrefabin<<" solicitado, no pudo abrirse" << std::endl;
+        std::cout << "No se pueden cargar las secuencias desde "<<nombrefabin << std::endl;
         return;
     }
     //lectura de 2 bytes en el archivo indicando 
