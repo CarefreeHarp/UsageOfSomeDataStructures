@@ -9,13 +9,15 @@ Permite cargar secuencias, listarlas, generar histogramas, verificar subsecuenci
 ```
 UsageOfSomeDataStructures/
 ├─ main.cpp                 # Punto de entrada; incluye la consola interactiva
-├─ proyecto.h               # Declaraciones (structs y prototipos)
-├─ proyecto.hxx             # Implementaciones (I/O, lógica de comandos y consola)
+├─ componente1.h            # Declaraciones (structs y prototipos) pertenecientes al componente 1 del proyecto
+├─ componente1.hxx          # Implementaciones (I/O, lógica de comandos y consola) pertenecientes al componente 1 del proyecto
+├─ componente2.h            # Declaraciones (structs y prototipos) pertenecientes al componente 2 del proyecto
+├─ componente2.hxx          # Implementaciones (I/O, lógica de comandos y consola) pertenecientes al componente 2 del proyecto
 ├─ archivo.fa               # Archivo FASTA de ejemplo
 ├─ codigos.txt              # Asociación base → significado (A→Adenina, ...)
 ├─ comandos.guda            # Binario con las definiciones de comandos disponibles
 ├─ Makefile                 # Compilar y ejecutar
-└─ Proyecto.pdf             # Enunciado y descripcion del trabajo a realizar
+└─ Proyecto.pdf             # Enunciado y descripción del trabajo a realizar
 ```
 
 ### Archivos de datos
