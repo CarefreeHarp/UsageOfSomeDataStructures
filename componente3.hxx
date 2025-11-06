@@ -1,0 +1,1 @@
+#include <componente3.h>

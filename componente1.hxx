@@ -2,6 +2,7 @@
 #include <cstring>
 #include <fstream>
 #include "componente2.hxx"
+#include "componente3.hxx"
 #include <string>
 void crearComando() {
   char otro = 'Y';
@@ -63,6 +64,7 @@ void Codigos::cargar() {
 
 void ListaSecuencias::cargar(const char *nombre) {
   bool primeraVez = true;
+  this -> secuencias.clear();
   Secuencia aux;
   strcpy(aux.nombre, "");
   char cadena[1000];
@@ -357,9 +359,11 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
         if (ComandosExistentes[i].nombre == argumentos[0]) {
           comandoEncontrado = true;
           argumentosCorrectos = true;
-          if (ComandosExistentes[i].argumentos == true && argumentos.size() != 2) {
+          if (ComandosExistentes[i].argumentos == true && argumentos.size() < 2) {
             argumentosCorrectos = false;
           } else if (ComandosExistentes[i].argumentos == false && argumentos.size() != 1) {
+            argumentosCorrectos = false;
+          } else if((argumentos[0] == "ruta_mas_corta" && argumentos.size() < 6 ) || (argumentos[0] == "base_remota" && argumentos.size() < 4)){
             argumentosCorrectos = false;
           }
         }
