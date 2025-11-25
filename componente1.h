@@ -10,7 +10,6 @@ struct Comando{
     char argumento[50];
     char descripcion[1000];
     char posiblesSalidas[1000];
-
 };
 
 struct Codigos{

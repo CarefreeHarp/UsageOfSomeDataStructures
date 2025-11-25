@@ -1,9 +1,10 @@
 #include "componente1.h"
-#include <cstring>
-#include <fstream>
 #include "componente2.hxx"
 #include "componente3.hxx"
+#include <cstring>
+#include <fstream>
 #include <string>
+
 void crearComando() {
   char otro = 'Y';
   while (otro == 'Y' || otro == 'y') {
@@ -64,20 +65,21 @@ void Codigos::cargar() {
 
 void ListaSecuencias::cargar(const char *nombre) {
   bool primeraVez = true;
-  this -> secuencias.clear();
+  this->secuencias.clear();
   Secuencia aux;
   strcpy(aux.nombre, "");
   char cadena[1000];
   int contador = 0;
   std::ifstream cargar(nombre);
   if (!cargar) {
-     std::cout << nombre << " no se encuentra o no puede leerse." << std::endl;;
+    std::cout << nombre << " no se encuentra o no puede leerse." << std::endl;
+    ;
     return;
   }
   if (cargar.peek() == std::ifstream::traits_type::eof()) {
     std::cout << nombre << " no contiene ninguna secuencia" << std::endl;
     return;
-  } 
+  }
   while (cargar.getline(cadena, 1000)) {
     if (cadena[0] == '>') {
       contador++;
@@ -108,33 +110,31 @@ void ListaSecuencias::listarSecuencia() {
   bool completa = true;
   int cantidadBases = 0;
   std::cout << "Hay " << secuencias.size() << " cargadas en memoria: " << std::endl;
-  if(secuencias.size() == 0){
+  if (secuencias.size() == 0) {
     std::cout << "No hay secuencias cargadas en memoria." << std::endl;
-    }
-    else{
-  for (int i = 0; i < secuencias.size(); i++) {
-    completa = true;
-    cantidadBases = 0;
-    std::cout << "Secuencia " << secuencias[i].nombre;
-    for (int j = 0; j < secuencias[i].contenido.size(); j++) {
-      int k = 0;
-      while (*(secuencias[i].contenido[j] + k) != '\0') {
-        if (*(secuencias[i].contenido[j] + k) != '-') {
-          cantidadBases++;
-        } else {
-          completa = false;
+  } else {
+    for (int i = 0; i < secuencias.size(); i++) {
+      completa = true;
+      cantidadBases = 0;
+      std::cout << "Secuencia " << secuencias[i].nombre;
+      for (int j = 0; j < secuencias[i].contenido.size(); j++) {
+        int k = 0;
+        while (*(secuencias[i].contenido[j] + k) != '\0') {
+          if (*(secuencias[i].contenido[j] + k) != '-') {
+            cantidadBases++;
+          } else {
+            completa = false;
+          }
+          k++;
         }
-        k++;
+      }
+      if (completa == true) {
+        std::cout << " contiene " << cantidadBases << " bases" << std::endl;
+      } else {
+        std::cout << " contiene al menos " << cantidadBases << " bases" << std::endl;
       }
     }
-    if (completa == true) {
-      std::cout << " contiene " << cantidadBases << " bases" << std::endl;
-    } else {
-      std::cout << " contiene al menos " << cantidadBases << " bases" << std::endl;
-    }
-   }
   }
-  
 }
 
 void ListaSecuencias::histograma(const char nombre[]) {
@@ -170,7 +170,7 @@ void ListaSecuencias::histograma(const char nombre[]) {
       std::cout << std::endl;
     }
   } else {
-    std::cout << "Secuencia invalida " <<std::endl;
+    std::cout << "Secuencia invalida " << std::endl;
   }
 }
 void ListaSecuencias::esSubsecuencia(const char subsecuencia[]) {
@@ -314,6 +314,7 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
   std::string comando, argumento;
   std::vector<std::string> argumentos;
   ListaSecuencias secuenciasEnMemoria;
+  SistemaDeGrafos grafosEnMemoria;
   while (comando != "salir") {
     bool comandoEncontrado = false;
     bool argumentosCorrectos = false;
@@ -330,7 +331,9 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
       } else if ((int)argumentos.size() == 2) {
         for (int i = 0; i < (int)ComandosExistentes.size(); i++) {
           if (ComandosExistentes[i].nombre == argumentos[1]) {
-            std::cout <<std::endl<<std::endl<< "Ayuda para el comando: " << std::endl
+            std::cout << std::endl
+                      << std::endl
+                      << "Ayuda para el comando: " << std::endl
                       << argumentos[1];
             if (ComandosExistentes[i].argumentos == true)
               std::cout << " <Argumento Necesario>";
@@ -341,7 +344,8 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
             std::cout << ComandosExistentes[i].descripcion << std::endl
                       << std::endl;
             std::cout << "Salidas posibles del comando " << argumentos[1] << std::endl;
-            std::cout << ComandosExistentes[i].posiblesSalidas<<std::endl<<std::endl;
+            std::cout << ComandosExistentes[i].posiblesSalidas << std::endl
+                      << std::endl;
             comandoEncontrado = true;
           }
         }
@@ -363,7 +367,7 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
             argumentosCorrectos = false;
           } else if (ComandosExistentes[i].argumentos == false && argumentos.size() != 1) {
             argumentosCorrectos = false;
-          } else if((argumentos[0] == "ruta_mas_corta" && argumentos.size() < 6 ) || (argumentos[0] == "base_remota" && argumentos.size() < 4)){
+          } else if ((argumentos[0] == "ruta_mas_corta" && argumentos.size() < 6) || (argumentos[0] == "base_remota" && argumentos.size() < 4)) {
             argumentosCorrectos = false;
           }
         }
@@ -375,6 +379,7 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
         if (argumentos[0] == "cargar") {
           std::cout << "Cargando archivo..." << std::endl;
           secuenciasEnMemoria.cargar(argumentos[1].c_str());
+          grafosEnMemoria.CargarSistemaDeGrafos(secuenciasEnMemoria);
         } else if (argumentos[0] == "listar_secuencias") {
           std::cout << "Listando secuencias..." << std::endl;
           secuenciasEnMemoria.listarSecuencia();
@@ -387,6 +392,7 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
         } else if (argumentos[0] == "enmascarar") {
           std::cout << "Enmascarando subsecuencia..." << std::endl;
           secuenciasEnMemoria.enmascarar(argumentos[1].c_str());
+          grafosEnMemoria.CargarSistemaDeGrafos(secuenciasEnMemoria);
         } else if (argumentos[0] == "guardar") {
           std::cout << "Guardando datos..." << std::endl;
           secuenciasEnMemoria.guardar(argumentos[1].c_str());
@@ -396,6 +402,17 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
         } else if (argumentos[0] == "decodificar") {
           ArbolDeCodificacionHuffman Arbol;
           Arbol.descomprimirSececuencias(argumentos[1], secuenciasEnMemoria);
+          grafosEnMemoria.CargarSistemaDeGrafos(secuenciasEnMemoria);
+        } else if (argumentos[0] == "ruta_mas_corta") {
+          int i = std::stoi(argumentos[2]);
+          int j = std::stoi(argumentos[3]);
+          int x = std::stoi(argumentos[4]);
+          int y = std::stoi(argumentos[5]);
+          grafosEnMemoria.ruta_mas_corta(argumentos[1].c_str(), i, j, x, y);
+        } else if (argumentos[0] == "base_remota") {
+          int i = std::stoi(argumentos[2]);
+          int j = std::stoi(argumentos[3]);
+          grafosEnMemoria.base_remota(argumentos[1].c_str(), i, j);
         }
       } else {
         std::cout << " La cantidad de argumentos es incorrecta" << std::endl;
