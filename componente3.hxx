@@ -73,9 +73,6 @@ void SistemaDeGrafos::CargarSistemaDeGrafos(ListaSecuencias SecuenciasEnMemoria)
 
 void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, int x, int y) {
 
-  // =======================
-  // 1. Buscar el grafo
-  // =======================
   Grafo *grafo = nullptr;
   for (Grafo &g : this->grafos) {
     if (nombreSecuencia == g.nombre) {
@@ -91,9 +88,6 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
   int ancho = grafo->anchuraLineas;
   int n = grafo->nodos.size();
 
-  // =======================
-  // 2. Convertir coordenadas
-  // =======================
   int origen = i * ancho + j;
   int destino = x * ancho + y;
 
@@ -102,21 +96,14 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
     return;
   }
 
-  // =======================
-  // 3. Arreglos del Dijkstra
-  // =======================
   std::vector<double> dist(n, std::numeric_limits<double>::infinity());
   std::vector<bool> visitado(n, false);
   std::vector<int> pred(n, -1);
 
   dist[origen] = 0;
 
-  // =======================
-  // 4. Dijkstra clásico
-  // =======================
-  for (int i = 0; i < n; i++) {
+  for (int a = 0; a < n; a++) {
 
-    // ---- 4.1 Escoger nodo NO visitado con menor distancia
     int u = -1;
     for (int k = 0; k < n; k++) {
       if (!visitado[k] && (u == -1 || dist[k] < dist[u])) {
@@ -125,21 +112,19 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
     }
 
     if (u == -1)
-      break; // No quedan alcanzables
+      break;
     visitado[u] = true;
     if (u == destino)
       break; // Ya llegamos al destino
 
     Nodo *nodoActual = grafo->nodos[u];
 
-    // ---- 4.2 Relajar vecinos
     for (int j = 0; j < 4; j++) {
 
       Nodo *vecino = nodoActual->vecinos[j];
       if (!vecino)
         continue;
 
-      // Buscar índice del vecino
       int v = -1;
       for (int l = 0; l < n; l++)
         if (grafo->nodos[l] == vecino) {
@@ -150,12 +135,10 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
       if (v == -1 || visitado[v])
         continue;
 
-      // Peso ASCII
       char a = nodoActual->valor;
       char b = vecino->valor;
       double peso = 1.0 / (1.0 + std::abs(a - b));
 
-      // Relajación estándar
       if (dist[u] + peso < dist[v]) {
         dist[v] = dist[u] + peso;
         pred[v] = u;
@@ -163,9 +146,6 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
     }
   }
 
-  // =======================
-  // 5. Reconstrucción del camino
-  // =======================
   if (dist[destino] == std::numeric_limits<double>::infinity()) {
     std::cout << "No existe camino entre los puntos dados." << std::endl;
     return;
@@ -177,9 +157,6 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
   }
   std::reverse(camino.begin(), camino.end());
 
-  // =======================
-  // 6. Imprimir resultados
-  // =======================
   std::cout << "Costo total: " << dist[destino] << std::endl;
   std::cout << "Camino: ";
   for (int m : camino) {
@@ -189,10 +166,6 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
 }
 
 void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
-
-  // =======================
-  // 1. Buscar el grafo
-  // =======================
   Grafo *grafo = nullptr;
   for (Grafo &g : this->grafos) {
     if (nombreSecuencia == g.nombre) {
@@ -208,9 +181,6 @@ void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
   int ancho = grafo->anchuraLineas;
   int n = grafo->nodos.size();
 
-  // =======================
-  // 2. Convertir coordenadas del origen
-  // =======================
   int origen = i * ancho + j;
 
   if (origen >= n || origen < 0) {
@@ -220,21 +190,14 @@ void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
 
   char letraOrigen = grafo->nodos[origen]->valor;
 
-  // =======================
-  // 3. Inicializar Dijkstra
-  // =======================
   std::vector<double> dist(n, std::numeric_limits<double>::infinity());
   std::vector<bool> visitado(n, false);
   std::vector<int> pred(n, -1);
 
   dist[origen] = 0;
 
-  // =======================
-  // 4. Dijkstra completo (NO paramos en ningún destino)
-  // =======================
-  for (int iter = 0; iter < n; iter++) {
+  for (int a = 0; a < n; a++) {
 
-    // ---- 4.1 escoger el nodo NO visitado con menor distancia
     int u = -1;
     for (int k = 0; k < n; k++) {
       if (!visitado[k] && (u == -1 || dist[k] < dist[u])) {
@@ -243,18 +206,17 @@ void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
     }
 
     if (u == -1)
-      break;  // No hay más alcanzables
+      break;
 
     visitado[u] = true;
 
     Nodo *actual = grafo->nodos[u];
 
-    // ---- 4.2 relajar vecinos
     for (int dir = 0; dir < 4; dir++) {
       Nodo *vec = actual->vecinos[dir];
-      if (!vec) continue;
+      if (!vec)
+        continue;
 
-      // hallar índice lineal del vecino
       int v = -1;
       for (int l = 0; l < n; l++) {
         if (grafo->nodos[l] == vec) {
@@ -266,10 +228,8 @@ void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
       if (v == -1 || visitado[v])
         continue;
 
-      // peso ASCII
       double peso = 1.0 / (1.0 + std::abs(actual->valor - vec->valor));
 
-      // relajación estándar
       if (dist[u] + peso < dist[v]) {
         dist[v] = dist[u] + peso;
         pred[v] = u;
@@ -277,49 +237,37 @@ void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
     }
   }
 
-  // =======================
-  // 5. Buscar la base más remota
-  // =======================
-  double maxDist = -1.0;
+  double distanciaMaxima = -1.0;
   int nodoRemoto = -1;
 
-  for (int idx = 0; idx < n; idx++) {
-    if (idx == origen) continue;
+  for (int b = 0; b < n; b++) {
+    if (b == origen)
+      continue;
 
-    if (grafo->nodos[idx]->valor == letraOrigen) {   // misma letra
-      if (dist[idx] != std::numeric_limits<double>::infinity()) {  // alcanzable
-        if (dist[idx] > maxDist) {
-          maxDist = dist[idx];
-          nodoRemoto = idx;
+    if (grafo->nodos[b]->valor == letraOrigen) {
+      if (dist[b] != std::numeric_limits<double>::infinity()) {
+        if (dist[b] > distanciaMaxima) {
+          distanciaMaxima = dist[b];
+          nodoRemoto = b;
         }
       }
     }
   }
 
   if (nodoRemoto == -1) {
-    std::cout << "No existe otra base remota con la letra '" 
-              << letraOrigen << "'." << std::endl;
+    std::cout << "No existe otra base remota con la letra '" << letraOrigen << "'." << std::endl;
     return;
   }
 
-  // =======================
-  // 6. Reconstruir el camino
-  // =======================
   std::vector<int> camino;
   for (int v = nodoRemoto; v != -1; v = pred[v]) {
     camino.push_back(v);
   }
   std::reverse(camino.begin(), camino.end());
 
-  // =======================
-  // 7. Imprimir resultados
-  // =======================
   std::cout << "Letra origen: '" << letraOrigen << "'" << std::endl;
-  std::cout << "Nodo remoto encontrado con la MISMA letra en: (" 
-            << nodoRemoto / ancho << "," << nodoRemoto % ancho << ")\n";
-
-  std::cout << "Distancia total: " << maxDist << std::endl;
-
+  std::cout << "Nodo encontrado con la misma letra en: (" << nodoRemoto / ancho << "," << nodoRemoto % ancho << ")\n";
+  std::cout << "Distancia total: " << distanciaMaxima << std::endl;
   std::cout << "Camino: ";
   for (int v : camino) {
     std::cout << "(" << v / ancho << "," << v % ancho << ") ";
