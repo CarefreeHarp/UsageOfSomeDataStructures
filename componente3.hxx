@@ -81,7 +81,7 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
     }
   }
   if (!grafo) {
-    std::cout << "La secuencia no existe" << std::endl;
+    std::cout << "La secuencia " << nombreSecuencia << " no existe" << std::endl;
     return;
   }
 
@@ -91,8 +91,10 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
   int origen = i * ancho + j;
   int destino = x * ancho + y;
 
+
+
   if (origen >= n || destino >= n || origen < 0 || destino < 0) {
-    std::cout << "Coordenadas fuera del rango" << std::endl;
+    std::cout << "La base en la posicion [" << i << ", " << j << "] no existe o" << " la base en la posicion [" << x << ", " << y << "] no existe"<< std::endl ;
     return;
   }
 
@@ -155,14 +157,15 @@ void SistemaDeGrafos::ruta_mas_corta(std::string nombreSecuencia, int i, int j, 
   for (int v = destino; v != -1; v = pred[v]) {
     camino.push_back(v);
   }
-  std::reverse(camino.begin(), camino.end());
-
-  std::cout << "Costo total: " << dist[destino] << std::endl;
-  std::cout << "Camino: ";
-  for (int m : camino) {
+  std::reverse(camino.begin(), camino.end()); 
+  std::cout << "Para la secuencia " << grafo->nombre << " la ruta mas corta entre la base " <<  grafo->nodos[(i * grafo->anchuraLineas)+ j]->valor << " en [" << i << ", " << j << "]" << " y la base " << grafo->nodos[(x * grafo->anchuraLineas)+ y]->valor << " en [" << x << ", " << y << "] es: " << std::endl;  
+    for (int m : camino) {
     std::cout << "(" << m / ancho << "," << m % ancho << ") ";
   }
   std::cout << std::endl;
+  std::cout << "El costo total de la ruta es: " << dist[destino] << std::endl;
+  
+
 }
 
 void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
@@ -174,7 +177,7 @@ void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
     }
   }
   if (!grafo) {
-    std::cout << "La secuencia no existe" << std::endl;
+    std::cout << "La secuencia " << nombreSecuencia << " no existe" << std::endl;
     return;
   }
 
@@ -184,7 +187,7 @@ void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
   int origen = i * ancho + j;
 
   if (origen >= n || origen < 0) {
-    std::cout << "Coordenadas fuera del rango" << std::endl;
+    std::cout << "La base en la posicion [" << i << ", " << j << "] no existe" << std::endl;
     return;
   }
 
@@ -265,12 +268,10 @@ void SistemaDeGrafos::base_remota(std::string nombreSecuencia, int i, int j) {
   }
   std::reverse(camino.begin(), camino.end());
 
-  std::cout << "Letra origen: '" << letraOrigen << "'" << std::endl;
-  std::cout << "Nodo encontrado con la misma letra en: (" << nodoRemoto / ancho << "," << nodoRemoto % ancho << ")\n";
-  std::cout << "Distancia total: " << distanciaMaxima << std::endl;
-  std::cout << "Camino: ";
+  std::cout << "Para la secuencia " << grafo->nombre << ", la base remota esta ubicada en " << "[" << nodoRemoto / ancho << ", " << nodoRemoto % ancho << "]" << " y la ruta entre la base en [" << i << ", " << j <<  "] y la base remota en [" << nodoRemoto / ancho << ", " << nodoRemoto % ancho << "] es: " << std::endl;
   for (int v : camino) {
     std::cout << "(" << v / ancho << "," << v % ancho << ") ";
   }
-  std::cout << std::endl;
+  std::cout << "El costo total de la ruta es: " << distanciaMaxima << std::endl;
+  
 }
