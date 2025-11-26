@@ -401,6 +401,7 @@ void escribirComandos(std::vector<Comando> ComandosExistentes) {
           Arbol.comprimirSecuencias(argumentos[1], secuenciasEnMemoria);
         } else if (argumentos[0] == "decodificar") {
           ArbolDeCodificacionHuffman Arbol;
+          Arbol.raiz = nullptr;
           Arbol.descomprimirSececuencias(argumentos[1], secuenciasEnMemoria);
           grafosEnMemoria.CargarSistemaDeGrafos(secuenciasEnMemoria);
         } else if (argumentos[0] == "ruta_mas_corta") {
